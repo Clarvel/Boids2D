@@ -2,7 +2,6 @@ class Boid extends Circle{
 	PVector direction;
 	float speed, max_speed, sense_length;
 	float thirst, hunger, tiredness;
-	float random;
 	float viewAngle;
 
 	Boid(PVector pos, float radius, float max_speed, float sense_length){
@@ -15,7 +14,6 @@ class Boid extends Circle{
 		this.hunger = 128;
 		this.tiredness = 128;
 		this.thirst = 128;
-		this.random = 0.001;
 		this.viewAngle = radians(135);
 	}
 

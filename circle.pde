@@ -22,7 +22,7 @@ class Circle extends Renderable{
 		if(r instanceof Circle){
 			Circle c = (Circle)r;
 			return c.radius+this.radius > PVector.dist(this.pos, c.pos);
-		}
+		} // TODO rectangle collisions
 		return false;
 	}
 }

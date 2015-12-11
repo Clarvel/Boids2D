@@ -3,11 +3,10 @@
 
 boolean DEBUG = true;
 
-ArrayList<Renderable> render = new ArrayList<Renderable>();
+ArrayList<Renderable> world = new ArrayList<Renderable>();
 ArrayList<Boid> boids = new ArrayList<Boid>();
 ArrayList<Renderable> objects = new ArrayList<Renderable>();
 
-PVector xaxis = new PVector(0, 0);
 
 void applyRules(){
 	for(Boid b : boids) {
@@ -94,14 +93,14 @@ void setup() {
 		PVector p = new PVector(random(radius, 1024-radius),random(radius, 768-radius));
 		Boid b = new Boid(p, radius, max_speed, sense_length);
 		boolean blocked = false;
-		for(Renderable r : render){
+		for(Renderable r : world){
 			if(b.collide(r)){
 				blocked = true;
 				break;
 			}
 		}
 		if(!blocked){
-			render.add(b);
+			world.add(b);
 			boids.add(b);
 		}
 
@@ -115,12 +114,12 @@ void draw () {
 	//camera();
 	// draw scene here
 
-	for(Renderable r : render){
+	for(Renderable r : world){
 		r.update(0);
 	}
 
 	// draw all objects
-	for(Renderable r : render) {
+	for(Renderable r : world) {
 		r.render();
 	}
 	
