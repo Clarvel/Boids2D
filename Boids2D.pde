@@ -6,10 +6,15 @@ boolean DEBUG = true;
 ArrayList<Renderable> world = new ArrayList<Renderable>();
 ArrayList<Boid> boids = new ArrayList<Boid>();
 ArrayList<Renderable> objects = new ArrayList<Renderable>();
-
+int time_start, time_end;
 
 void applyRules(){
+	ArrayList<Boid> rem = new ArrayList<Boid>();
 	for(Boid b : boids) {
+		if(b.thirst <= 0 || b.hunger <= 0 || b.tiredness <= 0){
+			rem.add(b);
+			continue;
+		}
 		// apply boid rules to all near birds
 		PVector r1 = new PVector(0, 0); // RULE 1: boids fly to perceived flock center
 		PVector r2 = new PVector(0, 0); // RULE 2: boids avoid other boids
@@ -70,6 +75,9 @@ void applyRules(){
 
 		b.steer(r1.add(r2).add(r3).add(r4).add(r5));
 	}
+	for(Boid b : rem){
+		boids.remove(b);
+	}
 }
 
 
@@ -105,6 +113,7 @@ void setup() {
 		}
 
 	}
+	time_start = millis();
 } 
 
 void draw () {
@@ -113,14 +122,19 @@ void draw () {
 	background(color(0, 255, 255));
 	//camera();
 	// draw scene here
+	if(boids.size() > 0){
+		for(Renderable r : world){
+			r.update(0);
+		}
 
-	for(Renderable r : world){
-		r.update(0);
-	}
-
-	// draw all objects
-	for(Renderable r : world) {
-		r.render();
+		// draw all objects
+		for(Renderable r : world) {
+			r.render();
+		}
+		time_end = millis();
+	}else{
+		textAlign(CENTER);
+		text("Your boids lasted " + float(time_end-time_start)/1000 + " seconds!", width/2, height/2);
 	}
 	
 
@@ -128,6 +142,7 @@ void draw () {
 	fill(0);
 	textSize(16);
 	if(DEBUG){
+		textAlign(LEFT);
 		text("Frame rate: " + int(frameRate) + "\n", 10, 20);
 	}
 }
