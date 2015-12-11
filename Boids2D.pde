@@ -7,6 +7,8 @@ ArrayList<Renderable> render = new ArrayList<Renderable>();
 ArrayList<Boid> boids = new ArrayList<Boid>();
 ArrayList<Renderable> objects = new ArrayList<Renderable>();
 
+PVector xaxis = new PVector(0, 0);
+
 void applyRules(){
 	for(Boid b : boids) {
 		// apply boid rules to all near birds
@@ -33,10 +35,10 @@ void applyRules(){
 
 					// use inverted distance func, ignoring when they are inside eachother:
 					//https://www.google.com/search?q=graph+a%3D5%2C+b%3D10%2C+y%3D(a%2Bb)*(a%2Bb)%2F(x-a)-((a%2Bb)*(a%2Bb)%2F((a%2Bb)*(a%2Bb)-a))&oq=graph+a%3D5%2C+b%3D10%2C+y%3D(a%2Bb)*(a%2Bb)%2F(x-a)-((a%2Bb)*(a%2Bb)%2F((a%2Bb)*(a%2Bb)-a))&aqs=chrome..69i57j69i60.464j0j4&sourceid=chrome&es_sm=91&ie=UTF-8#safe=off&q=graph+y%3D(5%2B10)%2F(x-5)-(1%2B5%2F10)
-					if(dm > touchrad){
+					if(dm > touchrad && PVector.angleBetween(b.direction, d) < b.viewAngle){
 						r2.sub(d.mult(sense/(dm-touchrad)-(1+touchrad/b.sense_length))); 
 					}else{
-						r2.sub(d.mult(10000));
+						//r2.sub(d.mult(10000));
 					}
 
 					r3.add(bb.direction); // sum all directions for rule 3, averaged later
@@ -47,13 +49,19 @@ void applyRules(){
 		}
 		// average and only normalize r1, r3
 		if(nearcount > 0){
-			r1.div(nearcount).sub(b.pos).normalize();
+			r1.div(nearcount).sub(b.pos);
+			r1.normalize();
+			r1.mult(0.5);
+
 			r2.div(nearcount);
+
 			r3.normalize();
+			r3.mult(0.5);
 		}
 
 		r4 = PVector.sub(new PVector(mouseX, mouseY), b.pos); // r4 is direction to the set path
 		r4.normalize();
+		r4.mult(0.15);
 
 		for(Renderable o : objects){
 			// TODO avoid objects for r5, treat each object as circle perhaps?
@@ -68,7 +76,7 @@ void applyRules(){
 
 void setup() {
 	size(1024, 768, P2D);
-	ellipseMode(CENTER);
+	ellipseMode(RADIUS);
 	// Writing to the depth buffer is disabled to avoid rendering
 	// artifacts due to the fact that the particles are semi-transparent
 	// but not z-sorted.

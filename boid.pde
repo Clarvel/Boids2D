@@ -2,7 +2,8 @@ class Boid extends Circle{
 	PVector direction;
 	float speed, max_speed, sense_length;
 	float thirst, hunger, tiredness;
-	PShape pointer;
+	float random;
+	float viewAngle;
 
 	Boid(PVector pos, float radius, float max_speed, float sense_length){
 		super(pos, radius, color(255, 255, 255));
@@ -14,9 +15,17 @@ class Boid extends Circle{
 		this.hunger = 128;
 		this.tiredness = 128;
 		this.thirst = 128;
+		this.random = 0.001;
+		this.viewAngle = radians(135);
 	}
 
 	void render(){
+		if(DEBUG){
+			fill(color(128, 128, 128, 50));
+			noStroke();
+			float ang = atan2(this.direction.y, this.direction.x);
+			arc(this.pos.x, this.pos.y, this.radius+this.sense_length, this.radius+this.sense_length, ang-this.viewAngle, ang+this.viewAngle);
+		}
 		super.render();
 		PVector dir = PVector.add(this.pos, PVector.mult(this.direction, this.radius));
 		stroke(0);
@@ -35,7 +44,9 @@ class Boid extends Circle{
 	void steer(PVector dir){
 		/* 
 		dir vector in the direction I want to move to
+		need to add a little randomness
 		*/
+		//dir.add(new PVector(random(-this.random, this.random),random(-this.random, this.random),random(-this.random, this.random)).normalize(null));
 		float mag = dir.mag()+this.speed;
 		dir.add(this.direction);
 		dir.normalize();
