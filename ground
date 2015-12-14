@@ -1,0 +1,5 @@
+class Ground extends Rectangle{
+  Ground(PVector pos){
+    super(pos, 300, 300, color(0, 102, 0));
+  }
+}
