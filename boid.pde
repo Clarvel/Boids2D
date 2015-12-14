@@ -30,16 +30,27 @@ class Boid extends Circle{
 		line(this.pos.x, this.pos.y, dir.x, dir.y);
 	}
 
-	void update(float dt){
-		// color is RGB, B=thirst, G=tiredness, R=hunger
-		this.hunger -= 0.1;
-		this.tiredness -= 0.1;
-		this.thirst -= 0.1;
-		this.col = color(int(this.hunger)%255, int(this.tiredness)%255, int(this.thirst)%255);
-		this.pos.add(PVector.mult(this.direction, this.speed * this.max_speed));
+void update(float dt){
+  for (Renderable r : objects){
+    if (this.collide(r)){
+      if (r instanceof Water){
+        this.thirst += 0.5;
+      }
+      if (r instanceof Ground){
+        this.tiredness += 0.5;
+      }
+      //TODO add conditions for food
+    }
+  }
+  // color is RGB, B=thirst, G=tiredness, R=hunger
+  this.hunger -= 0.1;
+  this.tiredness -= 0.1;
+  this.thirst -= 0.1;
+  this.col = color(int(this.hunger)%255, int(this.tiredness)%255, int(this.thirst)%255);
+  this.pos.add(PVector.mult(this.direction, this.speed * this.max_speed));
 	}
 
-	void steer(PVector dir){
+void steer(PVector dir){
 		/* 
 		dir vector in the direction I want to move to
 		need to add a little randomness
@@ -57,5 +68,3 @@ class Boid extends Circle{
 		this.speed = mag;
 	}
 }
-
-
