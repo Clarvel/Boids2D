@@ -37,8 +37,7 @@ void update(float dt){
     if (this.collide(r)){
       if (r instanceof Water){
         this.thirst += 0.5;
-      }
-      if (r instanceof Ground){
+      }else if (r instanceof Ground){
         this.tiredness += 0.5;
         GROUND_COLLIDE = true;
           Rectangle rec = (Rectangle)r;
