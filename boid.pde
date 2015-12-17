@@ -40,8 +40,8 @@ void update(float dt){
       }else if (r instanceof Ground){
         this.tiredness += 0.5;
         GROUND_COLLIDE = true;
-        Rectangle rec = (Rectangle)r;
-        POINT_ON_REC = closestPoint(rec);
+          Rectangle rec = (Rectangle)r;
+          POINT_ON_REC = closestPoint(rec);
       }
       //TODO add conditions for food
     }
@@ -55,7 +55,8 @@ void update(float dt){
     PVector groundToBoid = PVector.sub(this.pos, POINT_ON_REC);
     groundToBoid.setMag(this.radius+1);
     this.pos = PVector.add(groundToBoid, POINT_ON_REC);
-  }else {
+  }
+  else {
     this.pos.add(PVector.mult(this.direction, this.speed * this.max_speed));
   }
 }
@@ -90,24 +91,24 @@ void steer(PVector dir){
   
   PVector closestPoint(Rectangle rec){
     PVector p1 = distanceToLinePoint(rec.pos, new PVector(rec.pos.x, rec.pos.y + rec.high), this.pos);//left side
-    PVector p2 = distanceToLinePoint(rec.pos, new PVector(rec.pos.x + rec.wide, rec.pos.y), this.pos);//top side
-    PVector p3 = distanceToLinePoint(new PVector(rec.pos.x + rec.wide, rec.pos.y + rec.high), new PVector(rec.pos.x, rec.pos.y + rec.high), this.pos);//bottom side
-    PVector p4 = distanceToLinePoint(new PVector(rec.pos.x + rec.wide, rec.pos.y + rec.high), new PVector(rec.pos.x + rec.wide, rec.pos.y), this.pos);//right side
-    float l1 = p1.dist(this.pos);
-    float l2 = p2.dist(this.pos);
-    float l3 = p3.dist(this.pos);
-    float l4 = p4.dist(this.pos);
-    float min1 = min(l1, l2, l3);
-    float min2 = min(l4, min1);
-    if (min2 == l4) {
-      return p4;
-    }
-    if (min2 == l3) {
-      return p3;
-    }
-    if (min2 == l2) {
-      return p2;
-    }
-    return p1;
+      PVector p2 = distanceToLinePoint(rec.pos, new PVector(rec.pos.x + rec.wide, rec.pos.y), this.pos);//top side
+      PVector p3 = distanceToLinePoint(new PVector(rec.pos.x + rec.wide, rec.pos.y + rec.high), new PVector(rec.pos.x, rec.pos.y + rec.high), this.pos);//bottom side
+      PVector p4 = distanceToLinePoint(new PVector(rec.pos.x + rec.wide, rec.pos.y + rec.high), new PVector(rec.pos.x + rec.wide, rec.pos.y), this.pos);//right side
+      float l1 = p1.dist(this.pos);
+      float l2 = p2.dist(this.pos);
+      float l3 = p3.dist(this.pos);
+      float l4 = p4.dist(this.pos);
+      float min1 = min(l1, l2, l3);
+      float min2 = min(l4, min1);
+      if (min2 == l4) {
+        return p4;
+      }
+      if (min2 == l3) {
+        return p3;
+      }
+      if (min2 == l2) {
+        return p2;
+      }
+        return p1;
   }
 }

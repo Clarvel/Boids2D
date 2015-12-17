@@ -96,8 +96,6 @@ void setup() {
 	float radius = 20;
 	float sense_length = 20;
 
-	//world.add(new Ground(height-10));
-
 	// randomly place some number of boids
 	while(boids.size() < 30){
 		PVector p = new PVector(random(radius, 1024-radius),random(radius, 768-radius));
