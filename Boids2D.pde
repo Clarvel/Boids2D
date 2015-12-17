@@ -71,8 +71,8 @@ void applyRules(){
 			// TODO avoid objects for r5, treat each object as circle perhaps?
 			//and then use code for r2
 			//shouldn't be normalized
-			// find direction and magnitude components of direction b->bb
-			if (o instanceof Tree){
+			// find direction and magnitude components of directionb->bb
+            if (o instanceof Tree){
               Tree tr = (Tree)o;
               for(Renderable r : tr.shapes){
                 if (r instanceof Circle){
@@ -94,15 +94,15 @@ void applyRules(){
 
 		b.steer(r1.add(r2).add(r3).add(r4).add(r5));
 	}
-	for(Boid b : rem){
-		boids.remove(b);
-		world.remove(b);
-	}
+  for(Boid bo : rem){
+    boids.remove(bo);
+    world.remove(bo);
+  }}
 }
 
 
 void setup() {
-	size(1024, 768, P2D);
+  size(1024, 768, P2D);
 	ellipseMode(RADIUS);
 	// Writing to the depth buffer is disabled to avoid rendering
 	// artifacts due to the fact that the particles are semi-transparent
@@ -171,16 +171,48 @@ void draw () {
 	}else{
 		textAlign(CENTER);
 		text("Your boids lasted " + float(time_end-time_start)/1000 + " seconds!", width/2, height/2);
-	}
+  }
+
 	
 
 	// draw the 2D GUI here
 	fill(0);
 	textSize(16);
-	if(DEBUG){
-		textAlign(LEFT);
-		text("Frame rate: " + int(frameRate) + "\n", 10, 20);
-	}
+  if(DEBUG){
+    textAlign(LEFT);
+    text("Frame rate: " + int(frameRate) + "\n", 10, 20);
+  }
 }
 
-
+//Find shortest distance from point to line and return point on line
+  PVector distanceToLinePoint(PVector p1, PVector p2, PVector p) {
+    PVector u = PVector.sub(p2, p1);
+    PVector v = PVector.sub(p, p1);
+    float t = PVector.dot(u, v)/sq(u.mag());
+    if (t < 0) { return p1; }
+    if (t > 1) { return p2; }
+    return PVector.add(p1, PVector.mult(u, t));
+  }
+  
+  PVector closestPoint(Rectangle rec, Boid b){
+    PVector p1 = distanceToLinePoint(rec.pos, new PVector(rec.pos.x, rec.pos.y + rec.high), b.pos);//left side
+      PVector p2 = distanceToLinePoint(rec.pos, new PVector(rec.pos.x + rec.wide, rec.pos.y), b.pos);//top side
+      PVector p3 = distanceToLinePoint(new PVector(rec.pos.x + rec.wide, rec.pos.y + rec.high), new PVector(rec.pos.x, rec.pos.y + rec.high), b.pos);//bottom side
+      PVector p4 = distanceToLinePoint(new PVector(rec.pos.x + rec.wide, rec.pos.y + rec.high), new PVector(rec.pos.x + rec.wide, rec.pos.y), b.pos);//right side
+      float l1 = p1.dist(b.pos);
+      float l2 = p2.dist(b.pos);
+      float l3 = p3.dist(b.pos);
+      float l4 = p4.dist(b.pos);
+      float min1 = min(l1, l2, l3);
+      float min2 = min(l4, min1);
+      if (min2 == l4) {
+        return p4;
+      }
+      if (min2 == l3) {
+        return p3;
+      }
+      if (min2 == l2) {
+        return p2;
+      }
+        return p1;
+  }
