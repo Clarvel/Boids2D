@@ -37,13 +37,20 @@ void update(float dt){
     if (this.collide(r)){
       if (r instanceof Water){
         this.thirst += 0.5;
+        GROUND_COLLIDE = true;
+        Rectangle rec = (Rectangle)r;
+        POINT_ON_REC = closestPoint(rec);
       }else if (r instanceof Ground){
         this.tiredness += 0.5;
         GROUND_COLLIDE = true;
-          Rectangle rec = (Rectangle)r;
-          POINT_ON_REC = closestPoint(rec);
+        Rectangle rec = (Rectangle)r;
+        POINT_ON_REC = closestPoint(rec);
+      }else if(r instanceof FoodEmitter){
+        this.hunger += 0.5;
+        FoodEmitter f = (FoodEmitter)r;
+        f.radius -= 0.1;
+        println(f.radius);
       }
-      //TODO add conditions for food
     }
   }
   // color is RGB, B=thirst, G=tiredness, R=hunger

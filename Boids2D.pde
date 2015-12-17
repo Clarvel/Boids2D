@@ -1,7 +1,7 @@
 
 //http://www.red3d.com/cwr/boids/
 
-boolean DEBUG = true;
+boolean DEBUG = false;
 
 ArrayList<Renderable> world = new ArrayList<Renderable>();
 ArrayList<Boid> boids = new ArrayList<Boid>();
@@ -71,12 +71,14 @@ void applyRules(){
 			// TODO avoid objects for r5, treat each object as circle perhaps?
 			//and then use code for r2
 			//shouldn't be normalized
+			// find direction and magnitude components of direction b->bb
 		}
 
 		b.steer(r1.add(r2).add(r3).add(r4).add(r5));
 	}
 	for(Boid b : rem){
 		boids.remove(b);
+		world.remove(b);
 	}
 }
 
@@ -95,6 +97,18 @@ void setup() {
 	Ground g = new Ground(height-10);
 	objects.add(g);
 	world.add(g);
+
+	Water w = new Water(new PVector(500, height-26));
+	objects.add(w);
+	world.add(w);
+
+	Tree t = new Tree(new PVector(300, 550), 100, 50, 200);
+	objects.add(t);
+	world.add(t);
+
+	FoodEmitter f = new FoodEmitter(color(255, 0, 0, 50), 100);
+	objects.add(f);
+	world.add(f);
 
 	float max_speed = 2;
 	float radius = 20;

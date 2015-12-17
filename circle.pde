@@ -33,6 +33,13 @@ class Circle extends Renderable{
 			float min2 = min(l4, min1);
 			//println("rect");
 			return min2 < this.radius;  
+		}else if(r instanceof Grouping){
+			Grouping g = (Grouping)r;
+			for(Renderable r2 : g.shapes){
+				if(this.collide(r2)){
+					return true;
+				}
+			}
 		}
 		//println("other");
 		return false;
