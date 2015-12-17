@@ -71,37 +71,39 @@ void applyRules(){
 			// TODO avoid objects for r5, treat each object as circle perhaps?
 			//and then use code for r2
 			//shouldn't be normalized
-			// find direction and magnitude components of direction b->bb
-			if (o instanceof Tree){
-                Tree tr = (Tree)o;
-                for(Renderable r : tr.shapes){
-                    if (r instanceof Circle){
-                        Circle circ = (Circle)r;
-                        if (b.pos.dist(circ.pos) < circ.radius+b.radius+100){
-                            r5 = PVector.add(PVector.mult(PVector.sub(b.pos, circ.pos).normalize(), 10/(b.pos.dist(circ.pos)-b.radius-circ.radius)), r5);
-                        }
-                    }else if (r instanceof Rectangle){
-                        Rectangle rec = (Rectangle)r;
-                        PVector closest = new PVector (0,0); 
-                        closest = closestPoint(rec, b);
-                        if (b.pos.dist(closest) < b.radius+100){
-                            r5 = PVector.add(PVector.mult(PVector.sub(b.pos, closest).normalize(), 10/(b.pos.dist(closest)-b.radius)), r5);
-                        }     
-                    }
+			// find direction and magnitude components of directionb->bb
+            if (o instanceof Tree){
+              Tree tr = (Tree)o;
+              for(Renderable r : tr.shapes){
+                if (r instanceof Circle){
+                  Circle circ = (Circle)r;
+                  if (b.pos.dist(circ.pos) < circ.radius+b.radius+100){
+                    r5 = PVector.add(PVector.mult(PVector.sub(b.pos, circ.pos).normalize(), 10/(b.pos.dist(circ.pos)-b.radius-circ.radius)), r5);
+                  }
                 }
-            }
+                if (r instanceof Rectangle){
+                  Rectangle rec = (Rectangle)r;
+                  PVector closest = new PVector (0,0); 
+                  closest = closestPoint(rec, b);
+                  if (b.pos.dist(closest) < b.radius+100){
+                    r5 = PVector.add(PVector.mult(PVector.sub(b.pos, closest).normalize(), 10/(b.pos.dist(closest)-b.radius)), r5);
+                  }     
+                }
+              }
 		}
+
 		b.steer(r1.add(r2).add(r3).add(r4).add(r5));
 	}
-    for(Boid bo : rem){
-        boids.remove(bo);
-        world.remove(bo);
-    }
+}
+  for(Boid bo : rem){
+    boids.remove(bo);
+    world.remove(bo);
+  }
 }
 
 
 void setup() {
-  size(1024, 768, P2D);
+  size(1024, 700, P2D);
 	ellipseMode(RADIUS);
 	// Writing to the depth buffer is disabled to avoid rendering
 	// artifacts due to the fact that the particles are semi-transparent
