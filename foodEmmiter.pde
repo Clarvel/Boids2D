@@ -7,7 +7,7 @@ class FoodEmitter extends Circle{
   }
 
   void update(float dt){
-    if(this.radius <= 0){
+    if(this.radius <= 20){
       this.pos = new PVector(random(width), random(height));
       this.radius = this.maxradius;
     }

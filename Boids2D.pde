@@ -129,12 +129,12 @@ void setup() {
 	objects.add(f);
 	world.add(f);
 
-	float max_speed = 2;
+	float max_speed = 4;
 	float radius = 20;
 	float sense_length = 20;
 
 	// randomly place some number of boids
-	while(boids.size() < 30){
+	while(boids.size() < 15){
 		PVector p = new PVector(random(radius, 1024-radius),random(radius, 768-radius));
 		Boid b = new Boid(p, radius, max_speed, sense_length);
 		boolean blocked = false;

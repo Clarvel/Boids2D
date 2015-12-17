@@ -36,19 +36,19 @@ void update(float dt){
   for (Renderable r : objects){
     if (this.collide(r)){
       if (r instanceof Water){
-        this.thirst += 0.5;
+        this.thirst += 1;
         GROUND_COLLIDE = true;
         Rectangle rec = (Rectangle)r;
         POINT_ON_REC = closestPoint(rec);
       }else if (r instanceof Ground){
-        this.tiredness += 0.5;
+        this.tiredness += 1;
         GROUND_COLLIDE = true;
         Rectangle rec = (Rectangle)r;
         POINT_ON_REC = closestPoint(rec);
       }else if(r instanceof FoodEmitter){
-        this.hunger += 0.5;
+        this.hunger += 1;
         FoodEmitter f = (FoodEmitter)r;
-        f.radius -= 0.1;
+        f.radius -= 0.05;
         println(f.radius);
       }
     }
@@ -57,7 +57,7 @@ void update(float dt){
   this.hunger -= 0.1;
   this.tiredness -= 0.1;
   this.thirst -= 0.1;
-  this.col = color(int(this.hunger)%255, int(this.tiredness)%255, int(this.thirst)%255);
+  this.col = color(thresh(this.hunger), thresh(this.tiredness), thresh(this.thirst));
   if (GROUND_COLLIDE){
     PVector groundToBoid = PVector.sub(this.pos, POINT_ON_REC);
     groundToBoid.setMag(this.radius+1);
@@ -118,4 +118,10 @@ void steer(PVector dir){
       }
         return p1;
   }
+}
+int thresh(float a){
+  if(a > 255){
+    return 255;
+  }
+  return int(a);
 }
