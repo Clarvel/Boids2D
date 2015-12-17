@@ -92,6 +92,10 @@ void setup() {
 	frameRate(30);
 	sphereDetail(7);
 
+	Ground g = new Ground(height-10);
+	objects.add(g);
+	world.add(g);
+
 	float max_speed = 2;
 	float radius = 20;
 	float sense_length = 20;

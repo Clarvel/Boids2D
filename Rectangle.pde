@@ -11,6 +11,6 @@ class Rectangle extends Renderable{
   void render(){
     fill(this.col);
     noStroke();
-    rect(this.pos.x, this.pos.y, wide, high);
+    rect(this.pos.x, this.pos.y, this.wide, this.high);
   }
 }

@@ -21,9 +21,9 @@ class Circle extends Renderable{
 	boolean collide(Renderable r){
 		if(r instanceof Circle){
 			Circle c = (Circle)r;
+			//println("circle");
 			return c.radius+this.radius > PVector.dist(this.pos, c.pos);
-		} // TODO rectangle collisions
-		if(r instanceof Rectangle){
+		}else if(r instanceof Rectangle){
 			Rectangle rec = (Rectangle)r;
 			float l1 = distanceToLine(rec.pos, new PVector(rec.pos.x, rec.pos.y + rec.high), this.pos);//left side
 			float l2 = distanceToLine(rec.pos, new PVector(rec.pos.x + rec.wide, rec.pos.y), this.pos);//top side
@@ -31,8 +31,10 @@ class Circle extends Renderable{
 			float l4 = distanceToLine(new PVector(rec.pos.x + rec.wide, rec.pos.y + rec.high), new PVector(rec.pos.x + rec.wide, rec.pos.y), this.pos);//right side
 			float min1 = min(l1,l2,l3);
 			float min2 = min(l4, min1);
-			return min2 > this.radius;  
+			//println("rect");
+			return min2 < this.radius;  
 		}
+		//println("other");
 		return false;
 	}
 	
