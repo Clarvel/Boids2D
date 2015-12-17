@@ -2,12 +2,21 @@
 //http://www.red3d.com/cwr/boids/
 
 boolean DEBUG = true;
-
+ArrayList<Renderable> shapes = new ArrayList<Renderable>(); 
 ArrayList<Renderable> world = new ArrayList<Renderable>();
 ArrayList<Boid> boids = new ArrayList<Boid>();
 ArrayList<Renderable> objects = new ArrayList<Renderable>();
 int time_start, time_end;
-
+PVector treeUpPos = new PVector(300,400);
+color leave = color(0,255,0);
+PVector treeDownPos = new PVector(275,768-275);
+color token = color(178,93,37);
+PVector waterPos = new PVector(500,718);
+color waterCol = color(0,0,255);
+PVector randomPlace = new PVector(random(1024-100),random(768-100));
+color randomCol = color(random(255),random(255),random(255));
+ArrayList<Boid> rem;
+foodEmmiter food;
 void applyRules(){
 	ArrayList<Boid> rem = new ArrayList<Boid>();
 	for(Boid b : boids) {
@@ -77,7 +86,16 @@ void applyRules(){
 	}
 	for(Boid b : rem){
 		boids.remove(b);
-	}
+	
+}
+println("X: " + food.pos.x);
+println("Y: " + food.pos.y);
+for (int i = 0 ; i < rem.size() ; i++){
+  if (!food.intersect(rem.get(i).pos)){
+    food.emit();
+    print("abc");
+  }
+  }
 }
 
 
@@ -91,10 +109,6 @@ void setup() {
 
 	frameRate(30);
 	sphereDetail(7);
-
-	Ground g = new Ground(height-10);
-	objects.add(g);
-	world.add(g);
 
 	float max_speed = 2;
 	float radius = 20;
@@ -118,12 +132,32 @@ void setup() {
 
 	}
 	time_start = millis();
+
+  //treeDown.x = ;
+  Circle treeUp = new Circle(treeUpPos,100,leave);
+  Rectangle treeDown = new Rectangle(treeDownPos,50,400,token);
+  Rectangle waterPool = new Rectangle(waterPos,500,50,waterCol);
+  shapes.add(waterPool);
+  shapes.add(treeDown);
+  shapes.add(treeUp);
+  
+  food = new foodEmmiter(randomPlace,random(100),randomCol,100);
+  
+  //shapes.add(treeDown);
+  //grouping Tree = new grouping(shapes);
 } 
 
 void draw () {
 	applyRules();
-
+  
+  
 	background(color(0, 255, 255));
+  for (int i = 0 ; i < shapes.size() ; i ++){
+    shapes.get(i).render();
+  }
+  food.render();
+ 
+ //ellipse(treeUpPos.x, treeUpPos.y, 100, 100);
 	//camera();
 	// draw scene here
 	if(boids.size() > 0){
@@ -138,6 +172,7 @@ void draw () {
 		time_end = millis();
 	}else{
 		textAlign(CENTER);
+          fill(255,255,255);
 		text("Your boids lasted " + float(time_end-time_start)/1000 + " seconds!", width/2, height/2);
 	}
 	
@@ -150,5 +185,3 @@ void draw () {
 		text("Frame rate: " + int(frameRate) + "\n", 10, 20);
 	}
 }
-
-
